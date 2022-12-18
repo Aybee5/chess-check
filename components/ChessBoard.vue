@@ -60,7 +60,7 @@ defineEmits(["select"]);
 </script>
 
 <style lang="scss" scoped>
-.chess-piece path {
+.chess-piece {
   stroke: black;
   stroke-width: 16px;
   stroke-linejoin: round;
