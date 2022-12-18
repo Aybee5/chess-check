@@ -14,7 +14,8 @@
     "@vueuse/core": "^8.9.4",
     "@vueuse/nuxt": "^8.9.4",
     "nuxt": "3.0.0",
-    "nuxt-icon": "^0.1.8"
+    "nuxt-icon": "^0.1.8",
+    "sass": "^1.57.0"
   },
   "dependencies": {
     "chess.js": "1.0.0-alpha.0",
