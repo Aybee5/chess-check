@@ -5,45 +5,7 @@
       <div
         class="grid grid-cols-8 md:col-[2_/_span_6] col-span-full order-2 md:order-1"
       >
-        <div v-for="column in columns" :key="column">
-          <div
-            v-for="j in 8"
-            :key="j"
-            :class="[
-              columns.indexOf(column) % 2 === j % 2 ? 'bg-light' : 'bg-primary',
-            ]"
-            class="aspect-square flex items-center justify-center cursor-pointer capitalize relative chess-cell"
-          >
-            <DropDown
-              @select="setSelected($event, column, j)"
-              label="name"
-              :options="chessPieces"
-              class="w-full h-full"
-            >
-              <template #opener>
-                <div>
-                  <span v-if="activeCells[`${column}${j}`]">
-                    <Icon
-                      :name="activeCells[`${column}${j}`].icon"
-                      :class="[activeCells[`${column}${j}`].color]"
-                      class="chess-piece w-6 h-6 md:h-10 md:w-10"
-                    />
-                  </span>
-                  <span class="placeholder text-xs md:text-base" v-else>
-                    {{ column }}{{ j }}
-                    <Icon name="fa6-solid:caret-down" />
-                  </span>
-                </div>
-              </template>
-              <template v-slot:options="{ option }">
-                <div class="flex gap-2 items-center">
-                  <Icon :name="option.icon" v-if="option.icon" />
-                  {{ option.label }}
-                </div>
-              </template>
-            </DropDown>
-          </div>
-        </div>
+        <chess-board @select="setSelected" :activeCells="activeCells" />
       </div>
       <section
         class="md:col-[8_/_12] col-span-full flex items-start justify-center flex-col bg-dark px-6 md:px-10 py-10 rounded-md gap-6 order-1 md:order-2"
@@ -140,11 +102,9 @@
 </template>
 
 <script lang="ts" setup>
-import DropDown from "./components/DropDown.vue";
 import { ModalContent, SelectOption } from "./types/generics";
 import { Chess, validateFen } from "chess.js";
 
-const columns = "abcdefgh";
 const chessActions = [
   {
     label: "CheckMate",
@@ -160,16 +120,6 @@ const chessColors = [
   { label: "Black", colors: "bg-light-chess text-[#1d1c1a]", value: "b" },
 ];
 const activeColorValue = ref("w");
-
-const chessPieces = ref<SelectOption[]>([
-  { label: "None", icon: "", value: null },
-  { label: "King", icon: "fa6-solid:chess-king", value: "K" },
-  { label: "Queen", icon: "fa6-solid:chess-queen", value: "Q" },
-  { label: "Rook", icon: "fa6-solid:chess-rook", value: "R" },
-  { label: "Knight", icon: "fa6-solid:chess-knight", value: "N" },
-  { label: "Bishop", icon: "fa6-solid:chess-bishop", value: "B" },
-  { label: "Pawn", icon: "fa6-solid:chess-pawn", value: "P" },
-]);
 
 let positions = reactive({});
 const activeCells = reactive({});
@@ -193,6 +143,7 @@ const resetBoard = () => {
   Object.keys(positions).forEach((key) => delete positions[key]);
   Object.keys(activeCells).forEach((key) => delete activeCells[key]);
 };
+
 const showModal = ref(false);
 let modalMessage = reactive<ModalContent>({
   title: "",
@@ -219,14 +170,15 @@ const showErrorModal = (title: string = "This is an invalid board") => {
 const checkBoard = () => {
   const cleanedPositions = useDropFalsy(positions);
   const fenValue = useObjToFen(cleanedPositions);
+  const fullFen = `${fenValue} ${activeColorValue.value} - - 0 1`;
   if (typeof fenValue !== "string") {
     return showErrorModal();
   }
-  const isValid = validateFen(`${fenValue} ${activeColorValue.value} - - 0 1`);
+  const isValid = validateFen(fullFen);
   if (isValid.valid) {
     try {
       useValidatePieces(fenValue);
-      const chess = new Chess(`${fenValue} ${activeColorValue.value} - - 0 1`);
+      const chess = new Chess(fullFen);
       const status = ref(false);
       if (activeAction.value === "CheckMate") {
         status.value = chess.isCheckmate();
