@@ -59,4 +59,22 @@ defineProps<{
 defineEmits(["select"]);
 </script>
 
-<style scoped></style>
+<style lang="scss" scoped>
+.chess-piece path {
+  stroke: black;
+  stroke-width: 16px;
+  stroke-linejoin: round;
+}
+
+.chess-cell {
+  .placeholder {
+    @apply opacity-60;
+  }
+
+  &:hover {
+    .placeholder {
+      @apply opacity-100;
+    }
+  }
+}
+</style>

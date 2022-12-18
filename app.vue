@@ -211,24 +211,6 @@ body {
   @apply text-light-text text-lg mb-2;
 }
 
-.chess-piece path {
-  stroke: black;
-  stroke-width: 16px;
-  stroke-linejoin: round;
-}
-
-.chess-cell {
-  .placeholder {
-    @apply opacity-60;
-  }
-
-  &:hover {
-    .placeholder {
-      @apply opacity-100;
-    }
-  }
-}
-
 .actions-ul {
   @apply flex flex-wrap text-lg gap-3 items-center justify-center -mb-px font-medium text-center;
 }
