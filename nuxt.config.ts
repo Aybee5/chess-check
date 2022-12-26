@@ -35,6 +35,12 @@ export default defineNuxtConfig({
       ],
       title:
         "Check Chess | Check whether chessboard in in checkmate or in stalemate",
+      script: [
+        {
+          src: "https://www.googletagmanager.com/gtag/js?id=G-5GERBPC6YE",
+          async: true,
+        },
+      ],
     },
   },
   modules: [
