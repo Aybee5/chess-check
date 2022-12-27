@@ -16,11 +16,12 @@
       <div class="text-light-text text-sm md:text-base">
         Made with <Icon name="mdi:heart" class="self-center text-[red]" /> by
         <a
-          href="http://github.com/aybee5"
+          href="https://aybee.codes"
           target="_blank"
           class="text-primary-hover"
-          >Ibrahim</a
         >
+          Ibrahim
+        </a>
       </div>
     </div>
   </nav>
