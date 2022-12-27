@@ -63,4 +63,9 @@ export default defineNuxtConfig({
       theme_color: "#769656",
     },
   },
+  nitro: {
+    prerender: {
+      routes: ['/404.html']
+    }
+  }
 });
